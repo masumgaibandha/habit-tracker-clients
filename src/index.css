@@ -1,0 +1,32 @@
+/* @import "tailwindcss";
+@plugin "daisyui"; */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+@import "tailwindcss";
+
+@plugin "daisyui";
+@plugin "daisyui/theme" {
+  name: "light";
+  default: true;
+  --color-primary: #6A75FF;
+  --color-secondary: teal;
+}
+
+@layer base {
+  * {
+    font-family: "Inter", sans-serif;
+  }
+  
+}
+
+@layer components {
+  .my-btn {
+    @apply 
+           px-5 py-2 rounded
+           font-medium text-white
+           bg-gradient-to-r from-[#6A75FF] to-[#B500F9]
+           shadow-sm hover:brightness-110
+           transition duration-150;
+  }
+}
