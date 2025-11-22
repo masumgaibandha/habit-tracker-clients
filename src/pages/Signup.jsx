@@ -1,5 +1,3 @@
-import React from 'react'
-import { FaGoogle } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
 import { Link } from 'react-router';
 
@@ -38,8 +36,8 @@ const Signup = () => {
 
           <label className="label">Password</label>
           <input type="password" className="input" placeholder="Password" />
-          <div><a className="link link-hover">Forgot password?</a></div>
-          <button className="my-btn mt-4">Sign Up</button>
+          
+          <button type='submit' className="my-btn mt-4">Sign Up</button>
             </fieldset>
           </form>
           <p className='text-center'>OR</p>
@@ -56,7 +54,7 @@ const Signup = () => {
       </div>
     </div>
   </div>
-</div>
+    </div>
   )
 }
 
