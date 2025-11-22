@@ -1,12 +1,26 @@
+import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { FcGoogle } from 'react-icons/fc';
 import { Link } from 'react-router';
+import { auth } from '../firebase/firebase.config';
+import { toast } from 'react-toastify';
 
 const Signup = () => {
   
   const handleSignUp = (e) =>{
-    e.preventDefault()
+    e.preventDefault();
+    
+    const name = e.target.name.value;
     const email = e.target.email.value;
-    console.log('clicked', email)
+    const photo = e.target.photo.value;
+    const password = e.target.password.value;
+    console.log('New user signed up', {name, email, photo, password})
+
+    createUserWithEmailAndPassword(auth, email, password).then((res) =>{
+      toast.success('Sign up Successfully')
+    })
+    .catch(e=>{
+      toast.error("User Already registered")
+    })
   }
   return (
     <div className="hero bg-base-200 min-h-screen">
@@ -29,13 +43,13 @@ const Signup = () => {
             <input type="text" name="name" id="" placeholder='Your Name' className='input'/>
 
             <label className="label">Email</label>
-          <input type="email" className="input" placeholder="Email" />
+          <input type="email" name='email' className="input" placeholder="Email" />
 
           <label className='label'>Photo URL</label>
           <input type="url" name="photo" id="" placeholder='Input photo URL' className='input'/>
 
           <label className="label">Password</label>
-          <input type="password" className="input" placeholder="Password" />
+          <input type="password" name='password' className="input" placeholder="Password" />
           
           <button type='submit' className="my-btn mt-4">Sign Up</button>
             </fieldset>

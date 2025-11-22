@@ -14,7 +14,7 @@ const Signin = () => {
           </p>
         </div>
         <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
-          <h1 className="text-2xl font-bold text-center pt-3">Sign Up</h1>
+          <h1 className="text-2xl font-bold text-center pt-3">Sign In</h1>
           <div className="card-body">
             <form>
               <fieldset className="fieldset">
@@ -39,7 +39,7 @@ const Signin = () => {
               Sign in with Google
             </button>
             <p className="text-center pt-2">
-              Don't have an account? Please{" "}
+              Didn't have an account? Please{" "}
               <Link
                 to={"/signup"}
                 className="text-primary hover:text-blue-800 font-semibold"
