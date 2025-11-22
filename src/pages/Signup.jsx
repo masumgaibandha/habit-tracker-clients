@@ -15,6 +15,11 @@ const Signup = () => {
     const password = e.target.password.value;
     console.log('New user signed up', {name, email, photo, password})
 
+    if(password.length <6){
+      toast.error("Password should be more than 6 chracter")
+      return;
+    }
+
     createUserWithEmailAndPassword(auth, email, password).then((res) =>{
       toast.success('Sign up Successfully')
     })
