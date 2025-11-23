@@ -1,14 +1,21 @@
-import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { createUserWithEmailAndPassword, sendEmailVerification, updateProfile } from 'firebase/auth';
 import { FcGoogle } from 'react-icons/fc';
 import { Link } from 'react-router';
 import { auth } from '../firebase/firebase.config';
 import { toast } from 'react-toastify';
 import { FaEye, FaShower } from 'react-icons/fa';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { IoEyeOff } from 'react-icons/io5';
+import { AuthContext } from '../context/AuthContext';
 
 const Signup = () => {
   const [show, setShow] = useState(false)
+  const {
+    createUserWithEmailAndPasswordFunc,
+    updateProfileFunc,
+    sendEmailVerificationFunc
+
+  } = useContext(AuthContext)
 
   const handleSignUp = (e) =>{
     e.preventDefault();
@@ -17,7 +24,7 @@ const Signup = () => {
     const email = e.target.email.value;
     const photoURL = e.target.photo.value;
     const password = e.target.password.value;
-    console.log('New user signed up', {name, displayName, photoURL, password})
+    console.log('New user signed up', {displayName, photoURL, password})
 
     
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{6,}$/;
@@ -26,13 +33,25 @@ const Signup = () => {
       return;
     }
 
-    createUserWithEmailAndPassword(auth, email, password).then((res) =>{
-      updateProfile(res.user, {
-        displayName, photoURL}).then((res)=>{
-          toast.success('Sign up Successfully')
-        })
-        .catch((e)=>{
+    // createUserWithEmailAndPassword(auth, email, password)
+    createUserWithEmailAndPasswordFunc(email, password)
+    
+    .then((res) =>{
+      // updateProfile(res.user, {
+      //   displayName, photoURL})
+        updateProfileFunc(displayName, photoURL)
+        .then(()=>{
+          sendEmailVerificationFunc()
+          .then((res)=>{
+            toast.success('Verification email sent')
+          })
+          .catch((e)=>{
+            toast.error(e.message)
+          })
+          
+        }).catch((e)=>{
           toast.error(e.message)
+        
         })
       
     })

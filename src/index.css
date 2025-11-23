@@ -23,7 +23,7 @@
 @layer components {
   .my-btn {
     @apply 
-           rounded
+           rounded-xl
             text-white
            bg-gradient-to-r from-[#6A75FF] to-[#B500F9]
            shadow-sm hover:brightness-110

@@ -1,10 +1,24 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import MyContainer from './MyContainer'
 import { Link, NavLink } from 'react-router'
 import MyLink from './MyLink'
+import { AuthContext } from '../context/AuthContext'
+import { toast } from 'react-toastify'
 
 const Navbar = () => {
+  const {user, setUser, signOutFunc} = useContext(AuthContext)
 
+  const handleSignOut = () => {
+      signOutFunc()
+        .then(() => {
+          toast.success("Sign Out Successful");
+          setUser(null);
+        })
+        .catch((e) => {
+          toast.error(e.message);
+        });
+    };
+  console.log(user)
   // const {user} = use(AuthContext);
   // const links = <>
   //     <li><MyLink to={'/'}>Home</MyLink> </li>
@@ -56,11 +70,44 @@ const Navbar = () => {
         {/* {links} */}
         </ul>
   </div>
-  
 
-    <button className='my-btn h-10 w-25'>
-      <Link to='/signin'>Sign In</Link>
-    </button>
+    {user ? (
+  <div className="dropdown dropdown-bottom">
+    {/* Avatar button (trigger) */}
+    <div
+      tabIndex={0}
+      role="button"
+      className="btn btn-ghost btn-circle avatar"
+    >
+      <div className="w-11 rounded-full">
+        <img
+          src={user?.photoURL || "https://i.ibb.co/8LRrxWQR/Masum2.png"}
+          alt={user?.displayName || user?.email}
+        />
+      </div>
+    </div>
+
+    {/* Dropdown card, centered under avatar */}
+    <div
+      tabIndex={0}
+      className="dropdown-content mt-3 z-[1] w-60 rounded-box bg-base-100 shadow-sm p-3 space-y-2 text-center left-1/2 -translate-x-1/2"
+    >
+      <h2 className="text-lg font-semibold">{user?.displayName}</h2>
+      <p className="text-sm text-gray-700">{user?.email}</p>
+      <button
+        onClick={handleSignOut}
+        className="my-btn cursor-pointer w-full h-8"
+      >
+        Sign Out
+      </button>
+    </div>
+  </div>
+) : (
+  <button className="my-btn h-10 w-25">
+    <Link to="/signin">Sign In</Link>
+  </button>
+)}
+    
       </MyContainer>
     </div>
   )
