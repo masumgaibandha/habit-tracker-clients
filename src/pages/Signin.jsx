@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { Link, useNavigate } from "react-router";
 import { toast } from "react-toastify";
@@ -20,6 +20,12 @@ const Signin = () => {
 
   const navigate = useNavigate()
 
+  useEffect(() => {
+  if (user) {
+    navigate("/", { replace: true });
+  }
+}, [user, navigate]);
+
   const emailRef = useRef(null);
 
   const handleSignin = (e) => {
@@ -33,10 +39,10 @@ const Signin = () => {
       .then((res) => {
         setLoading(false)
         // will be delete
-        if (!res.user?.emailVerified) {
-          toast.error("Your email is not verified");
-          return;
-        }
+        // if (!res.user?.emailVerified) {
+        //   toast.error("Your email is not verified");
+        //   return;
+        // }
         // above will be delete
         setUser(res.user);
         toast.success("Sign in successful");

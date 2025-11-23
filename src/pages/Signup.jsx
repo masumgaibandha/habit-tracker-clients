@@ -44,8 +44,6 @@ const Signup = () => {
     
     .then((res) =>{
       setLoading(false)
-      // updateProfile(res.user, {
-      //   displayName, photoURL})
         updateProfileFunc(displayName, photoURL)
         .then(()=>{
           sendEmailVerificationFunc()
@@ -54,7 +52,7 @@ const Signup = () => {
             
             signOutFunc()
                     .then(() => {
-                      toast.success('Verification email sent')
+                      toast.success('Sign Up Successful')
                       setUser(null);
                       navigate("/signin")
                     })
