@@ -3,9 +3,13 @@ import { FcGoogle } from 'react-icons/fc';
 import { Link } from 'react-router';
 import { auth } from '../firebase/firebase.config';
 import { toast } from 'react-toastify';
+import { FaEye, FaShower } from 'react-icons/fa';
+import { useState } from 'react';
+import { IoEyeOff } from 'react-icons/io5';
 
 const Signup = () => {
-  
+  const [show, setShow] = useState(false)
+
   const handleSignUp = (e) =>{
     e.preventDefault();
     
@@ -15,8 +19,10 @@ const Signup = () => {
     const password = e.target.password.value;
     console.log('New user signed up', {name, email, photo, password})
 
-    if(password.length <6){
-      toast.error("Password should be more than 6 chracter")
+    
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{6,}$/;
+    if(!passwordRegex.test(password)){
+      toast.error("Password must be at least 6 characters and include uppercase, lowercase, and a number")
       return;
     }
 
@@ -29,9 +35,10 @@ const Signup = () => {
   }
   return (
     <div className="hero bg-base-200 min-h-screen">
-  <div className="hero-content flex-col lg:flex-row-reverse">
-    <div className="text-center lg:text-left">
+  <div className="hero-content flex-col lg:flex-row-reverse ">
+    <div className="text-center lg:text-left ">
       
+      <h1 className='text-4xl font-bold'>Create Your Account</h1>
       <p className="py-6">
         Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda excepturi exercitationem
         quasi. In deleniti eaque aut repudiandae et a id nisi.
@@ -42,7 +49,7 @@ const Signup = () => {
       <h1 className="text-2xl font-bold text-center pt-3">Sign Up</h1>
       <div className="card-body">
         
-          <form onSubmit={handleSignUp}>
+          <form onSubmit={handleSignUp} className='relative'>
             <fieldset className='fieldset'>
               <label className='label'>Name</label>
             <input type="text" name="name" id="" placeholder='Your Name' className='input'/>
@@ -54,16 +61,14 @@ const Signup = () => {
           <input type="url" name="photo" id="" placeholder='Input photo URL' className='input'/>
 
           <label className="label">Password</label>
-          <input type="password" name='password' className="input" placeholder="Password" />
-          
-          <button type='submit' className="my-btn mt-4">Sign Up</button>
+          <input type={show? "text": "password"} name='password' className="input" placeholder="Password" />
+          <span onClick={() => setShow(!show)} className='absolute right-[30px] bottom-[70px] cursor-pointer'>
+            {show? <FaEye size={15}/> : <IoEyeOff size={15}/>}
+            </span>
+          <button type='submit' className="my-btn mt-4 h-8 cursor-pointer">Sign Up</button>
             </fieldset>
           </form>
-          <p className='text-center'>OR</p>
-          <button className='btn bg-base-100'>
-            <FcGoogle size={20}/>
-          Sign in with Google
-          </button>
+          
           <p className='text-center pt-2'>Already have an account? Please {" "}
           <Link to={'/signin'} className='text-primary hover:text-blue-800 font-semibold'>
           Sign in

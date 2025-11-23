@@ -23,8 +23,8 @@
 @layer components {
   .my-btn {
     @apply 
-           px-5 py-2 rounded
-           font-medium text-white
+           rounded
+            text-white
            bg-gradient-to-r from-[#6A75FF] to-[#B500F9]
            shadow-sm hover:brightness-110
            transition duration-150;
