@@ -4,9 +4,10 @@ import { Link, NavLink } from 'react-router'
 import MyLink from './MyLink'
 import { AuthContext } from '../context/AuthContext'
 import { toast } from 'react-toastify'
+import { BounceLoader } from 'react-spinners'
 
 const Navbar = () => {
-  const {user, setUser, signOutFunc} = useContext(AuthContext)
+  const {user, setUser, signOutFunc, loading, setLoading} = useContext(AuthContext)
 
   const handleSignOut = () => {
       signOutFunc()
@@ -43,10 +44,10 @@ const Navbar = () => {
         tabIndex="-1"
         className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
         <li><MyLink to={'/'}>Home</MyLink> </li>
-        <li><MyLink to={'/addhabit'}>Add Habit</MyLink> </li>
-        <li> <MyLink to={'/myhabits'}>My Habits</MyLink> </li>
         <li> <MyLink to={'/publichabits'}>Browse Public Habits</MyLink> </li>
-        <li> <MyLink to={'/profile'}>Profile</MyLink></li>
+        {user && <li><MyLink to={'/addhabit'}>Add Habit</MyLink> </li>}
+        {user && <li> <MyLink to={'/myhabits'}>My Habits</MyLink> </li>}
+        {/* <li> <MyLink to={'/profile'}>Profile</MyLink></li> */}
         {/* {links} */}
       </ul>
     </div>
@@ -63,15 +64,15 @@ const Navbar = () => {
   <div className="navbar-center hidden lg:flex ">
     <ul className="menu menu-horizontal px-1 text-[18px] flex items-center gap-4">
         <li><MyLink to={'/'}>Home</MyLink> </li>
-        <li><MyLink to={'/addhabit'}>Add Habit</MyLink> </li>
-        <li> <MyLink to={'/myhabits'}>My Habits</MyLink> </li>
         <li> <MyLink to={'/publichabits'}>Browse Public Habits</MyLink> </li>
-        <li> <MyLink to={'/profile'}>Profile</MyLink></li>
+        {user && <li><MyLink to={'/addhabit'}>Add Habit</MyLink> </li>}
+        {user && <li> <MyLink to={'/myhabits'}>My Habits</MyLink> </li>}
+        {/* <li> <MyLink to={'/profile'}>Profile</MyLink></li> */}
         {/* {links} */}
         </ul>
   </div>
 
-    {user ? (
+    {loading ? <BounceLoader color="#2ce1dc"/> : user ? (
   <div className="dropdown dropdown-bottom">
     {/* Avatar button (trigger) */}
     <div

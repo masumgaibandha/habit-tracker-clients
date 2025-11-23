@@ -1,6 +1,6 @@
 import { createUserWithEmailAndPassword, sendEmailVerification, updateProfile } from 'firebase/auth';
 import { FcGoogle } from 'react-icons/fc';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { auth } from '../firebase/firebase.config';
 import { toast } from 'react-toastify';
 import { FaEye, FaShower } from 'react-icons/fa';
@@ -13,9 +13,14 @@ const Signup = () => {
   const {
     createUserWithEmailAndPasswordFunc,
     updateProfileFunc,
-    sendEmailVerificationFunc
+    sendEmailVerificationFunc,
+    setLoading,
+    signOutFunc,
+    setUser,
 
   } = useContext(AuthContext)
+
+  const navigate = useNavigate();
 
   const handleSignUp = (e) =>{
     e.preventDefault();
@@ -24,6 +29,7 @@ const Signup = () => {
     const email = e.target.email.value;
     const photoURL = e.target.photo.value;
     const password = e.target.password.value;
+
     console.log('New user signed up', {displayName, photoURL, password})
 
     
@@ -37,13 +43,22 @@ const Signup = () => {
     createUserWithEmailAndPasswordFunc(email, password)
     
     .then((res) =>{
+      setLoading(false)
       // updateProfile(res.user, {
       //   displayName, photoURL})
         updateProfileFunc(displayName, photoURL)
         .then(()=>{
           sendEmailVerificationFunc()
           .then((res)=>{
-            toast.success('Verification email sent')
+            setLoading(false)
+            
+            signOutFunc()
+                    .then(() => {
+                      toast.success('Verification email sent')
+                      setUser(null);
+                      navigate("/signin")
+                    })
+
           })
           .catch((e)=>{
             toast.error(e.message)

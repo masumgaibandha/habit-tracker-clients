@@ -1,6 +1,6 @@
 import React, { useContext, useRef, useState } from "react";
 import { FcGoogle } from "react-icons/fc";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import { FaEye } from "react-icons/fa";
 import { IoEyeOff } from "react-icons/io5";
@@ -12,11 +12,13 @@ const Signin = () => {
   const { 
     signInWithEmailAndPasswordFunc, 
     signInWithGoogleFunc, 
-    signOutFunc, 
     sendPasswordResetEmailFunc,
     user, setUser,
+    setLoading,
   } =
     useContext(AuthContext);
+
+  const navigate = useNavigate()
 
   const emailRef = useRef(null);
 
@@ -29,6 +31,7 @@ const Signin = () => {
     // signInWithEmailAndPassword(auth, email, password)
     signInWithEmailAndPasswordFunc(email, password)
       .then((res) => {
+        setLoading(false)
         // will be delete
         if (!res.user?.emailVerified) {
           toast.error("Your email is not verified");
@@ -37,6 +40,8 @@ const Signin = () => {
         // above will be delete
         setUser(res.user);
         toast.success("Sign in successful");
+        navigate("/")
+
       })
       .catch((error) => {
         toast.error("Please input valid credential");
@@ -49,8 +54,10 @@ const Signin = () => {
     // signInWithPopup(auth, googleProvider)
     signInWithGoogleFunc()
       .then((res) => {
+        setLoading(false)
         setUser(res.user);
         toast.success("Google sign in successful");
+        navigate("/")
       })
       .catch((error) => {
         toast.error("Invalid credential");
@@ -65,6 +72,7 @@ const Signin = () => {
     // sendPasswordResetEmail(auth, email)
     sendPasswordResetEmailFunc(email)
       .then((res) => {
+        setLoading(false)
         toast.success("Reset url sent to your email");
       })
       .catch((e) => {

@@ -30,10 +30,10 @@ export const router = createBrowserRouter([
         path: '/publichabits',
         element: <PublicHabits/>
       },
-      {
-        path: '/profile',
-        element: <Profile/>
-      },
+      // {
+      //   path: '/profile',
+      //   element: <Profile/>
+      // },
       {
         path: '/signup',
         element: <Signup/>
