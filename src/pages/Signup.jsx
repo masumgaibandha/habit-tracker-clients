@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { FcGoogle } from 'react-icons/fc';
 import { Link } from 'react-router';
 import { auth } from '../firebase/firebase.config';
@@ -13,11 +13,11 @@ const Signup = () => {
   const handleSignUp = (e) =>{
     e.preventDefault();
     
-    const name = e.target.name.value;
+    const displayName = e.target.name.value;
     const email = e.target.email.value;
-    const photo = e.target.photo.value;
+    const photoURL = e.target.photo.value;
     const password = e.target.password.value;
-    console.log('New user signed up', {name, email, photo, password})
+    console.log('New user signed up', {name, displayName, photoURL, password})
 
     
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{6,}$/;
@@ -27,7 +27,14 @@ const Signup = () => {
     }
 
     createUserWithEmailAndPassword(auth, email, password).then((res) =>{
-      toast.success('Sign up Successfully')
+      updateProfile(res.user, {
+        displayName, photoURL}).then((res)=>{
+          toast.success('Sign up Successfully')
+        })
+        .catch((e)=>{
+          toast.error(e.message)
+        })
+      
     })
     .catch(e=>{
       toast.error("User Already registered")

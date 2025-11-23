@@ -10,7 +10,7 @@ import { IoEyeOff } from "react-icons/io5";
 const googleProvider = new GoogleAuthProvider()
 
 const Signin = () => {
-  const [user, setUser] = useState({})
+  const [user, setUser] = useState(null)
   const [show, setShow] = useState(false);
 
   const handleSignin = (e) =>{

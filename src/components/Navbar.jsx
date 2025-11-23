@@ -58,7 +58,7 @@ const Navbar = () => {
   </div>
   
 
-    <button className='my-btn'>
+    <button className='my-btn h-10 w-25'>
       <Link to='/signin'>Sign In</Link>
     </button>
       </MyContainer>
