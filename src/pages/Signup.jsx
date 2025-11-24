@@ -12,6 +12,7 @@ const Signup = () => {
   const [show, setShow] = useState(false)
   const {
     createUserWithEmailAndPasswordFunc,
+    signInWithGoogleFunc,
     updateProfileFunc,
     sendEmailVerificationFunc,
     setLoading,
@@ -72,6 +73,23 @@ const Signup = () => {
       toast.error("User Already registered")
     })
   }
+
+  const handleSigninWithGoogle = (e) => {
+      e.preventDefault();
+      console.log("clicked in Google");
+      // signInWithPopup(auth, googleProvider)
+      signInWithGoogleFunc()
+        .then((res) => {
+          setLoading(false)
+          setUser(res.user);
+          toast.success("Google sign in successful");
+          navigate("/")
+        })
+        .catch((error) => {
+          toast.error("Invalid credential");
+        });
+    };
+
   return (
     <div className="hero bg-base-200 min-h-screen">
   <div className="hero-content flex-col lg:flex-row-reverse ">
@@ -107,6 +125,14 @@ const Signup = () => {
           <button type='submit' className="my-btn mt-4 h-8 cursor-pointer">Sign Up</button>
             </fieldset>
           </form>
+          <p className="text-center">OR</p>
+                      <button
+                        onClick={handleSigninWithGoogle}
+                        className="btn bg-base-100"
+                      >
+                        <FcGoogle size={20} />
+                        Sign in with Google
+                      </button>
           
           <p className='text-center pt-2'>Already have an account? Please {" "}
           <Link to={'/signin'} className='text-primary hover:text-blue-800 font-semibold'>
