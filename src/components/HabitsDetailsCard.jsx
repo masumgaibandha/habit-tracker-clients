@@ -1,11 +1,21 @@
-import React from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useLoaderData } from "react-router";
 import { toast } from "react-toastify";
 import MyContainer from "../components/MyContainer";
 
 const HabitsDetailsCard = () => {
   const data = useLoaderData();
-  const habit = data?.result || {};
+  const initialHabit = data?.result || data || {};
+
+  const [habit, setHabit] = useState(initialHabit);
+  const [completionHistory, setCompletionHistory] = useState(
+    initialHabit.completionHistory || []
+  );
+
+  useEffect(() => {
+    setHabit(initialHabit);
+    setCompletionHistory(initialHabit.completionHistory || []);
+  }, [initialHabit]);
 
   const {
     _id,
@@ -22,9 +32,42 @@ const HabitsDetailsCard = () => {
     bestStreak,
   } = habit;
 
+  const todayStr = useMemo(
+    () => new Date().toISOString().slice(0, 10),
+    []
+  );
+
+  const completedToday = completionHistory.includes(todayStr);
+
+  const { completedLast30, progressPercent } = useMemo(() => {
+    if (!completionHistory.length) {
+      return { completedLast30: 0, progressPercent: 0 };
+    }
+
+    const today = new Date();
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(today.getDate() - 29);
+
+    const count = completionHistory.filter((iso) => {
+      const d = new Date(iso);
+      if (Number.isNaN(d.getTime())) return false;
+      return d >= thirtyDaysAgo && d <= today;
+    }).length;
+
+    return {
+      completedLast30: count,
+      progressPercent: Math.round((count / 30) * 100),
+    };
+  }, [completionHistory]);
+
   const handleMarkComplete = () => {
     if (!_id) {
       toast.error("Habit not found");
+      return;
+    }
+
+    if (completedToday) {
+      toast.error("Already completed for today");
       return;
     }
 
@@ -34,6 +77,16 @@ const HabitsDetailsCard = () => {
       .then((res) => res.json())
       .then((result) => {
         if (result.success) {
+          const updatedHistory = Array.from(
+            new Set([...completionHistory, todayStr])
+          );
+
+          setCompletionHistory(updatedHistory);
+          setHabit((prev) => ({
+            ...prev,
+            completionHistory: updatedHistory,
+          }));
+
           toast.success("Marked as complete for today");
         } else {
           toast.error(result.message || "Already completed today");
@@ -44,7 +97,6 @@ const HabitsDetailsCard = () => {
       });
   };
 
- 
   if (!title && !description) {
     return (
       <div className="min-h-screen bg-base-200 flex items-center justify-center">
@@ -58,9 +110,9 @@ const HabitsDetailsCard = () => {
   return (
     <div className="min-h-screen bg-base-200 py-10">
       <MyContainer className="max-w-3xl">
-        <div className="card bg-base-100 shadow-xl rounded-2xl p-6 md:p-8">
+        <div className="card bg-base-100 shadow-xl rounded-2xl p-6 md:p-8 space-y-5">
           {/* Header */}
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
               <p className="text-xs uppercase tracking-[0.2em] text-gray-500 mb-1">
                 Habit Details
@@ -77,7 +129,7 @@ const HabitsDetailsCard = () => {
                 <div className="w-12 rounded-full">
                   <img
                     src={userPhoto || "https://i.ibb.co/8LRrxWQR/Masum2.png"}
-                    alt={userName}
+                    alt={userName || title}
                   />
                 </div>
               </div>
@@ -94,9 +146,20 @@ const HabitsDetailsCard = () => {
             </div>
           </div>
 
-          {/* Main content */}
-          <div className="border-t border-gray-100 my-4" />
+          {/* Habit image */}
+          {userPhoto && (
+            <div className="overflow-hidden rounded-2xl">
+              <img
+                src={userPhoto}
+                alt={title}
+                className="w-full h-64 md:h-80 object-cover"
+              />
+            </div>
+          )}
 
+          <div className="border-t border-gray-100" />
+
+          {/* Content */}
           <div className="space-y-4">
             <div>
               <h2 className="text-lg font-semibold mb-1">Description</h2>
@@ -120,24 +183,40 @@ const HabitsDetailsCard = () => {
               </div>
             </div>
 
-            {(currentStreak !== undefined || bestStreak !== undefined) && (
-              <div className="p-4 rounded-xl bg-base-200">
-                <p className="text-gray-500 text-xs uppercase mb-2">Progress</p>
-                <div className="flex flex-wrap gap-4 text-sm">
+            {/* Progress section */}
+            <div className="p-4 rounded-xl bg-base-200 space-y-3">
+              <div className="flex items-center justify-between gap-3">
+                <p className="text-gray-500 text-xs uppercase">
+                  Progress (last 30 days)
+                </p>
+                <span className="text-xs font-semibold">
+                  {completedLast30}/30 days • {progressPercent}%
+                </span>
+              </div>
+              <progress
+                className="progress progress-primary w-full"
+                value={progressPercent}
+                max="100"
+              />
+              {(currentStreak !== undefined || bestStreak !== undefined) && (
+                <div className="flex flex-wrap gap-4 text-sm mt-1">
                   <span>🔥 Current streak: {currentStreak || 0} days</span>
                   <span>🏆 Best streak: {bestStreak || 0} days</span>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
           </div>
 
-          <div className="mt-6 flex flex-wrap justify-end">
+          <div className="mt-2 flex flex-wrap justify-end">
             <button
               type="button"
               onClick={handleMarkComplete}
-              className="my-btn h-10 px-6 cursor-pointer"
+              disabled={completedToday}
+              className={`my-btn h-10 px-6 cursor-pointer ${
+                completedToday ? "opacity-70 cursor-not-allowed" : ""
+              }`}
             >
-              Mark Complete
+              {completedToday ? "Completed Today" : "Mark Complete"}
             </button>
           </div>
         </div>

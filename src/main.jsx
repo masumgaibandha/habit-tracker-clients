@@ -1,6 +1,6 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { RouterProvider } from "react-router-dom";
+import { RouterProvider } from "react-router/dom";
 import { ToastContainer } from "react-toastify";
 import AuthProvider from "./context/AuthProvider";
 import { router } from "./routes/routes";
