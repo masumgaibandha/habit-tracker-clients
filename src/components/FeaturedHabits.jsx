@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router"; 
+import { Link } from "react-router";
 import MyContainer from "./MyContainer";
 import { BounceLoader } from "react-spinners";
 
@@ -8,7 +8,7 @@ const FeaturedHabits = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:3000/habits")
+    fetch("https://habit-tracker-server-eta.vercel.app/habits")
       .then((res) => res.json())
       .then((data) => {
         const publicHabits = data.filter((h) => h.isPublic);
@@ -75,7 +75,8 @@ const FeaturedHabits = () => {
                       {habit.title || "Untitled Habit"}
                     </h3>
                     <p className="text-xs uppercase tracking-wide text-gray-500">
-                      {habit.category || "General"} • {habit.frequency || "Daily"}
+                      {habit.category || "General"} •{" "}
+                      {habit.frequency || "Daily"}
                     </p>
                   </div>
                   <span className="badge badge-outline text-xs">
@@ -83,7 +84,7 @@ const FeaturedHabits = () => {
                   </span>
                 </div>
 
-                  <p className="text-sm text-gray-600 flex-1 line-clamp-3">
+                <p className="text-sm text-gray-600 flex-1 line-clamp-3">
                   {habit.description ||
                     "No description provided for this habit yet."}
                 </p>

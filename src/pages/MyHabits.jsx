@@ -14,7 +14,9 @@ const MyHabits = () => {
 
   useEffect(() => {
     if (!user?.email) return;
-    fetch(`http://localhost:3000/my-habits?email=${user.email}`)
+    fetch(
+      `https://habit-tracker-server-eta.vercel.app/my-habits?email=${user.email}`
+    )
       .then((res) => res.json())
       .then((data) => {
         setHabits(data.result || data);
@@ -34,7 +36,7 @@ const MyHabits = () => {
   const handleDelete = (id) => {
     if (!confirm("Are you sure?")) return;
 
-    fetch(`http://localhost:3000/habits/${id}`, {
+    fetch(`https://habit-tracker-server-eta.vercel.app/habits/${id}`, {
       method: "DELETE",
     })
       .then((res) => res.json())
@@ -47,7 +49,7 @@ const MyHabits = () => {
   };
 
   const handleMarkComplete = (id) => {
-    fetch(`http://localhost:3000/habits/${id}/complete`, {
+    fetch(`https://habit-tracker-server-eta.vercel.app/habits/${id}/complete`, {
       method: "PATCH",
     })
       .then((res) => res.json())

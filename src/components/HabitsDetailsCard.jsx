@@ -32,10 +32,7 @@ const HabitsDetailsCard = () => {
     bestStreak,
   } = habit;
 
-  const todayStr = useMemo(
-    () => new Date().toISOString().slice(0, 10),
-    []
-  );
+  const todayStr = useMemo(() => new Date().toISOString().slice(0, 10), []);
 
   const completedToday = completionHistory.includes(todayStr);
 
@@ -70,9 +67,12 @@ const HabitsDetailsCard = () => {
       return;
     }
 
-    fetch(`http://localhost:3000/habits/${_id}/complete`, {
-      method: "PATCH",
-    })
+    fetch(
+      `https://habit-tracker-server-eta.vercel.app/habits/${_id}/complete`,
+      {
+        method: "PATCH",
+      }
+    )
       .then((res) => res.json())
       .then((result) => {
         if (result.success) {
@@ -97,7 +97,9 @@ const HabitsDetailsCard = () => {
   if (!title && !description) {
     return (
       <div className="min-h-screen bg-base-200 flex items-center justify-center">
-        <p className="text-sm text-gray-600">Habit details could not be loaded.</p>
+        <p className="text-sm text-gray-600">
+          Habit details could not be loaded.
+        </p>
       </div>
     );
   }
@@ -106,10 +108,11 @@ const HabitsDetailsCard = () => {
     <div className="min-h-screen bg-base-200 py-10">
       <MyContainer className="max-w-3xl">
         <div className="card bg-base-100 shadow-xl rounded-2xl p-6 md:p-8 space-y-5">
-
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
-              <p className="text-xs uppercase tracking-[0.2em] text-gray-500">Habit Details</p>
+              <p className="text-xs uppercase tracking-[0.2em] text-gray-500">
+                Habit Details
+              </p>
               <h1 className="text-2xl md:text-3xl font-bold">{title}</h1>
               <p className="text-sm text-gray-500 mt-1">
                 {category} • {frequency}
@@ -153,7 +156,9 @@ const HabitsDetailsCard = () => {
           <div className="space-y-4">
             <div>
               <h2 className="text-lg font-semibold">Description</h2>
-              <p className="text-sm text-gray-700 leading-relaxed">{description}</p>
+              <p className="text-sm text-gray-700 leading-relaxed">
+                {description}
+              </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
@@ -200,7 +205,9 @@ const HabitsDetailsCard = () => {
               onClick={handleMarkComplete}
               disabled={completedToday}
               className={`my-btn h-10 px-6 ${
-                completedToday ? "opacity-70 cursor-not-allowed" : "cursor-pointer"
+                completedToday
+                  ? "opacity-70 cursor-not-allowed"
+                  : "cursor-pointer"
               }`}
             >
               {completedToday ? "Completed Today" : "Mark Complete"}

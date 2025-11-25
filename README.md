@@ -2,8 +2,8 @@ HabitFlow – Habit Tracking Web App
 HabitFlow is a simple habit-tracking website where users can create habits, track progress, and build daily streaks. It includes authentication, private routes, habit management, and a clean responsive UI.
 
 Live Links
-• Client:
-• Server:
+• Client: https://github.com/masumgaibandha/habit-tracker-clients
+• Server: https://github.com/masumgaibandha/habit-trackers
 
 Features:
 

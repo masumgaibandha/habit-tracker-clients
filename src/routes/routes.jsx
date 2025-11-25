@@ -44,7 +44,9 @@ export const router = createBrowserRouter([
           </PrivateRoute>
         ),
         loader: ({ params }) =>
-          fetch(`http://localhost:3000/habits/${params.id}`),
+          fetch(
+            `https://habit-tracker-server-eta.vercel.app/habits/${params.id}`
+          ),
       },
       {
         path: "/update-habit/:id",
@@ -54,12 +56,15 @@ export const router = createBrowserRouter([
           </PrivateRoute>
         ),
         loader: ({ params }) =>
-          fetch(`http://localhost:3000/habits/${params.id}`),
+          fetch(
+            `https://habit-tracker-server-eta.vercel.app/habits/${params.id}`
+          ),
       },
       {
         path: "/publichabits",
         element: <PublicHabits />,
-        loader: () => fetch("http://localhost:3000/public-habits"),
+        loader: () =>
+          fetch("https://habit-tracker-server-eta.vercel.app/public-habits"),
       },
       {
         path: "/signup",
@@ -72,7 +77,6 @@ export const router = createBrowserRouter([
     ],
   },
 
-  
   {
     path: "*",
     element: <NotFound />,

@@ -29,12 +29,12 @@ const UpdateHabits = () => {
       category: form.category.value,
       frequency: form.frequency.value,
       userPhoto: form.userPhoto.value,
-      userName, 
-      userEmail, 
+      userName,
+      userEmail,
       isPublic: form.isPublic.checked,
     };
 
-    fetch(`http://localhost:3000/habits/${_id}`, {
+    fetch(`https://habit-tracker-server-eta.vercel.app/habits/${_id}`, {
       method: "PATCH",
       headers: {
         "content-type": "application/json",

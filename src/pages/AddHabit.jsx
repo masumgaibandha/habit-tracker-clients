@@ -21,29 +21,29 @@ const AddHabit = () => {
       reminderTime: form.reminderTime.value,
       isPublic: form.isPublic.checked,
     };
-     fetch("http://localhost:3000/habits", {
-    method: "POST",
-    headers: {
-      "content-type": "application/json",
-    },
-    body: JSON.stringify(formData),
-  })
-    .then((res) => res.json())
-    .then((data) => {
-      if (
-        data?.insertedId ||
-        data?._id ||
-        data?.acknowledged ||
-        data?.success
-      ) {
-        toast.success("Habit added successfully!");
-        form.reset(); 
-      } else {
-        toast.error("Failed to add habit.");
-      }
+    fetch("https://habit-tracker-server-eta.vercel.app/habits", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(formData),
     })
-    .catch((err) => {
-      toast.error(err.message);
+      .then((res) => res.json())
+      .then((data) => {
+        if (
+          data?.insertedId ||
+          data?._id ||
+          data?.acknowledged ||
+          data?.success
+        ) {
+          toast.success("Habit added successfully!");
+          form.reset();
+        } else {
+          toast.error("Failed to add habit.");
+        }
+      })
+      .catch((err) => {
+        toast.error(err.message);
       });
   };
 
