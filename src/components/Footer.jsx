@@ -1,62 +1,146 @@
-import React from 'react'
+import React from "react";
+import { Link } from "react-router";
+import MyContainer from "./MyContainer";
 
 const Footer = () => {
   return (
-    <footer className="footer sm:footer-horizontal bg-base-300 text-base-content p-10">
-  <nav>
-    <h6 className="footer-title">Services</h6>
-    <a className="link link-hover">Branding</a>
-    <a className="link link-hover">Design</a>
-    <a className="link link-hover">Marketing</a>
-    <a className="link link-hover">Advertisement</a>
-  </nav>
-  <nav>
-    <h6 className="footer-title">Company</h6>
-    <a className="link link-hover">About us</a>
-    <a className="link link-hover">Contact</a>
-    <a className="link link-hover">Jobs</a>
-    <a className="link link-hover">Press kit</a>
-  </nav>
-  <nav>
-    <h6 className="footer-title">Social</h6>
-    <div className="grid grid-flow-col gap-4">
-      <a>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          className="fill-current">
-          <path
-            d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"></path>
-        </svg>
-      </a>
-      <a>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          className="fill-current">
-          <path
-            d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"></path>
-        </svg>
-      </a>
-      <a>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          className="fill-current">
-          <path
-            d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"></path>
-        </svg>
-      </a>
-    </div>
-  </nav>
-</footer>
-  )
-}
+    <footer className="bg-base-200 border-t mt-10">
+      <MyContainer className="px-4 py-10">
+        <div className="grid gap-8 md:grid-cols-4">
+          {/* Brand */}
+          <div className="md:col-span-2 space-y-3">
+            <Link to="/" className="flex items-center gap-2">
+              <img
+                src="https://i.ibb.co/yF5QRccH/logo.jpg"
+                alt="HabitFlow Logo"
+                className="w-10 rounded-xl"
+              />
+              <span className="text-xl font-bold">HabitFlow</span>
+            </Link>
+            <p className="text-sm text-gray-600 max-w-md">
+              HabitFlow helps you turn small, daily actions into powerful
+              routines. Track your progress, build streaks, and grow a lifestyle
+              you’re proud of.
+            </p>
+          </div>
 
-export default Footer
+          {/* Quick Links */}
+          <div>
+            <h3 className="text-sm font-semibold mb-3 uppercase tracking-wide">
+              Quick Links
+            </h3>
+            <ul className="space-y-2 text-sm text-gray-700">
+              <li>
+                <Link to="/" className="hover:text-primary cursor-pointer">
+                  Home
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/publichabits"
+                  className="hover:text-primary cursor-pointer"
+                >
+                  Browse Public Habits
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/addhabit"
+                  className="hover:text-primary cursor-pointer"
+                >
+                  Add Habit
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/myhabits"
+                  className="hover:text-primary cursor-pointer"
+                >
+                  My Habits
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Contact & Legal */}
+          <div>
+            <h3 className="text-sm font-semibold mb-3 uppercase tracking-wide">
+              Contact & Legal
+            </h3>
+            <p className="text-sm text-gray-700 mb-2">
+              Email:{" "}
+              <a
+                href="mailto:support@habitflow.app"
+                className="text-primary hover:underline cursor-pointer"
+              >
+                support@habitflow.app
+              </a>
+            </p>
+            <p className="text-sm text-gray-700 mb-4">
+              Location: Dhaka, Bangladesh
+            </p>
+            <ul className="space-y-2 text-sm text-gray-700">
+              <li>
+                <button className="hover:text-primary cursor-pointer">
+                  Terms &amp; Conditions
+                </button>
+              </li>
+              <li>
+                <button className="hover:text-primary cursor-pointer">
+                  Privacy Policy
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        {/* Bottom bar */}
+        <div className="mt-8 flex flex-col md:flex-row items-center justify-between gap-4 border-t pt-4">
+          <p className="text-xs text-gray-500">
+            © {new Date().getFullYear()} HabitFlow. All rights reserved.
+          </p>
+
+          <div className="flex items-center gap-3">
+            <span className="text-xs text-gray-500">Follow us</span>
+            <div className="flex items-center gap-3">
+              {/* X (Twitter) */}
+              <a
+                href="#"
+                aria-label="Follow on X"
+                className="w-8 h-8 rounded-full border border-gray-400 flex items-center justify-center text-xs font-bold hover:bg-black hover:text-white hover:border-black transition cursor-pointer"
+              >
+                X
+              </a>
+              {/* Facebook */}
+              <a
+                href="#"
+                aria-label="Facebook"
+                className="w-8 h-8 rounded-full border border-gray-400 flex items-center justify-center text-xs font-bold hover:bg-blue-600 hover:text-white hover:border-blue-600 transition cursor-pointer"
+              >
+                f
+              </a>
+              {/* Instagram */}
+              <a
+                href="#"
+                aria-label="Instagram"
+                className="w-8 h-8 rounded-full border border-gray-400 flex items-center justify-center text-xs font-bold hover:bg-pink-500 hover:text-white hover:border-pink-500 transition cursor-pointer"
+              >
+                IG
+              </a>
+              {/* GitHub */}
+              <a
+                href="#"
+                aria-label="GitHub"
+                className="w-8 h-8 rounded-full border border-gray-400 flex items-center justify-center text-xs font-bold hover:bg-gray-900 hover:text-white hover:border-gray-900 transition cursor-pointer"
+              >
+                GH
+              </a>
+            </div>
+          </div>
+        </div>
+      </MyContainer>
+    </footer>
+  );
+};
+
+export default Footer;

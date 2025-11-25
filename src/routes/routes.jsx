@@ -9,6 +9,8 @@ import Profile from "../pages/Profile";
 import Signup from "../pages/Signup";
 import Signin from "../pages/Signin";
 import PrivateRoute from "../PrivateRoute/PrivateRoute";
+import HabitsDetailsCard from "../components/HabitsDetailsCard";
+import UpdateHabits from "../components/UpdateHabits";
 
 export const router = createBrowserRouter([
   {
@@ -17,38 +19,61 @@ export const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Home/>
+        element: <Home />,
       },
       {
-        path: '/addhabit',
-        element: <PrivateRoute><AddHabit/></PrivateRoute>
+        path: "/addhabit",
+        element: (
+          <PrivateRoute>
+            <AddHabit />
+          </PrivateRoute>
+        ),
       },
       {
-        path: '/myhabits',
-        element: <PrivateRoute><MyHabits/></PrivateRoute>
+        path: "/myhabits",
+        element: (
+          <PrivateRoute>
+            <MyHabits />
+          </PrivateRoute>
+        ),
       },
       {
-        path: '/publichabits',
-        element: <PublicHabits/>
-      },
-      // {
-      //   path: '/profile',
-      //   element: <Profile/>
-      // },
-      {
-        path: '/signup',
-        element: <Signup/>
+        path: "/habits/:id",
+        element: (
+          <PrivateRoute>
+            <HabitsDetailsCard />
+          </PrivateRoute>
+        ),
+        loader: ({ params }) =>
+          fetch(`http://localhost:3000/habits/${params.id}`),
       },
       {
-        path: '/signin',
-        element: <Signin/>
-      }
-    ]
+        path: "/update-habit/:id",
+        element: (
+          <PrivateRoute>
+            <UpdateHabits />
+          </PrivateRoute>
+        ),
+        loader: ({ params }) =>
+          fetch(`http://localhost:3000/habits/${params.id}`),
+      },
+
+
+      {
+        path: "/publichabits",
+        element: <PublicHabits />,
+        loader: () => fetch("http://localhost:3000/public-habits"),
+      },
+      
+      {
+        path: "/signup",
+        element: <Signup />,
+      },
+      {
+        path: "/signin",
+        element: <Signin />,
+      },
+    ],
   },
 ]);
 
-// const root = document.getElementById("root");
-
-// ReactDOM.createRoot(root).render(
-// <RouterProvider router={router} />
-// );
