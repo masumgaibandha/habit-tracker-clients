@@ -1,16 +1,15 @@
 import { createBrowserRouter } from "react-router";
-import { RouterProvider } from "react-router/dom";
 import MainLayout from "../layout/MainLayout";
 import Home from "../pages/Home";
 import AddHabit from "../pages/AddHabit";
 import MyHabits from "../pages/MyHabits";
 import PublicHabits from "../pages/PublicHabits";
-import Profile from "../pages/Profile";
 import Signup from "../pages/Signup";
 import Signin from "../pages/Signin";
 import PrivateRoute from "../PrivateRoute/PrivateRoute";
 import HabitsDetailsCard from "../components/HabitsDetailsCard";
 import UpdateHabits from "../components/UpdateHabits";
+import NotFound from "./NotFound";
 
 export const router = createBrowserRouter([
   {
@@ -57,14 +56,11 @@ export const router = createBrowserRouter([
         loader: ({ params }) =>
           fetch(`http://localhost:3000/habits/${params.id}`),
       },
-
-
       {
         path: "/publichabits",
         element: <PublicHabits />,
         loader: () => fetch("http://localhost:3000/public-habits"),
       },
-      
       {
         path: "/signup",
         element: <Signup />,
@@ -75,5 +71,10 @@ export const router = createBrowserRouter([
       },
     ],
   },
-]);
 
+  
+  {
+    path: "*",
+    element: <NotFound />,
+  },
+]);
