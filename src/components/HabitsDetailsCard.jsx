@@ -50,8 +50,7 @@ const HabitsDetailsCard = () => {
 
     const count = completionHistory.filter((iso) => {
       const d = new Date(iso);
-      if (Number.isNaN(d.getTime())) return false;
-      return d >= thirtyDaysAgo && d <= today;
+      return !isNaN(d) && d >= thirtyDaysAgo && d <= today;
     }).length;
 
     return {
@@ -77,32 +76,28 @@ const HabitsDetailsCard = () => {
       .then((res) => res.json())
       .then((result) => {
         if (result.success) {
-          const updatedHistory = Array.from(
-            new Set([...completionHistory, todayStr])
-          );
+          const updated = result.updatedHabit;
 
-          setCompletionHistory(updatedHistory);
+          setCompletionHistory(updated.completionHistory);
           setHabit((prev) => ({
             ...prev,
-            completionHistory: updatedHistory,
+            currentStreak: updated.currentStreak,
+            bestStreak: updated.bestStreak,
+            completionHistory: updated.completionHistory,
           }));
 
-          toast.success("Marked as complete for today");
+          toast.success("Marked as complete!");
         } else {
           toast.error(result.message || "Already completed today");
         }
       })
-      .catch(() => {
-        toast.error("Something went wrong");
-      });
+      .catch(() => toast.error("Something went wrong"));
   };
 
   if (!title && !description) {
     return (
       <div className="min-h-screen bg-base-200 flex items-center justify-center">
-        <p className="text-sm text-gray-600">
-          Habit details could not be loaded.
-        </p>
+        <p className="text-sm text-gray-600">Habit details could not be loaded.</p>
       </div>
     );
   }
@@ -111,19 +106,16 @@ const HabitsDetailsCard = () => {
     <div className="min-h-screen bg-base-200 py-10">
       <MyContainer className="max-w-3xl">
         <div className="card bg-base-100 shadow-xl rounded-2xl p-6 md:p-8 space-y-5">
-          {/* Header */}
+
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
-              <p className="text-xs uppercase tracking-[0.2em] text-gray-500 mb-1">
-                Habit Details
-              </p>
+              <p className="text-xs uppercase tracking-[0.2em] text-gray-500">Habit Details</p>
               <h1 className="text-2xl md:text-3xl font-bold">{title}</h1>
               <p className="text-sm text-gray-500 mt-1">
                 {category} • {frequency}
               </p>
             </div>
 
-            {/* Creator info */}
             <div className="flex items-center gap-3">
               <div className="avatar">
                 <div className="w-12 rounded-full">
@@ -146,7 +138,6 @@ const HabitsDetailsCard = () => {
             </div>
           </div>
 
-          {/* Habit image */}
           {userPhoto && (
             <div className="overflow-hidden rounded-2xl">
               <img
@@ -159,33 +150,29 @@ const HabitsDetailsCard = () => {
 
           <div className="border-t border-gray-100" />
 
-          {/* Content */}
           <div className="space-y-4">
             <div>
-              <h2 className="text-lg font-semibold mb-1">Description</h2>
-              <p className="text-sm text-gray-700 leading-relaxed">
-                {description}
-              </p>
+              <h2 className="text-lg font-semibold">Description</h2>
+              <p className="text-sm text-gray-700 leading-relaxed">{description}</p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
               <div className="p-3 rounded-xl bg-base-200">
                 <p className="text-gray-500 text-xs uppercase">Category</p>
-                <p className="font-semibold mt-1">{category}</p>
+                <p className="font-semibold">{category}</p>
               </div>
               <div className="p-3 rounded-xl bg-base-200">
                 <p className="text-gray-500 text-xs uppercase">Frequency</p>
-                <p className="font-semibold mt-1">{frequency}</p>
+                <p className="font-semibold">{frequency}</p>
               </div>
               <div className="p-3 rounded-xl bg-base-200">
                 <p className="text-gray-500 text-xs uppercase">Start Date</p>
-                <p className="font-semibold mt-1">{startDate || "Not set"}</p>
+                <p className="font-semibold">{startDate || "Not set"}</p>
               </div>
             </div>
 
-            {/* Progress section */}
             <div className="p-4 rounded-xl bg-base-200 space-y-3">
-              <div className="flex items-center justify-between gap-3">
+              <div className="flex items-center justify-between">
                 <p className="text-gray-500 text-xs uppercase">
                   Progress (last 30 days)
                 </p>
@@ -193,27 +180,27 @@ const HabitsDetailsCard = () => {
                   {completedLast30}/30 days • {progressPercent}%
                 </span>
               </div>
+
               <progress
                 className="progress progress-primary w-full"
                 value={progressPercent}
                 max="100"
               />
-              {(currentStreak !== undefined || bestStreak !== undefined) && (
-                <div className="flex flex-wrap gap-4 text-sm mt-1">
-                  <span>🔥 Current streak: {currentStreak || 0} days</span>
-                  <span>🏆 Best streak: {bestStreak || 0} days</span>
-                </div>
-              )}
+
+              <div className="flex flex-wrap gap-4 text-sm">
+                <span>🔥 Current streak: {currentStreak || 0} days</span>
+                <span>🏆 Best streak: {bestStreak || 0} days</span>
+              </div>
             </div>
           </div>
 
-          <div className="mt-2 flex flex-wrap justify-end">
+          <div className="flex justify-end">
             <button
               type="button"
               onClick={handleMarkComplete}
               disabled={completedToday}
-              className={`my-btn h-10 px-6 cursor-pointer ${
-                completedToday ? "opacity-70 cursor-not-allowed" : ""
+              className={`my-btn h-10 px-6 ${
+                completedToday ? "opacity-70 cursor-not-allowed" : "cursor-pointer"
               }`}
             >
               {completedToday ? "Completed Today" : "Mark Complete"}
